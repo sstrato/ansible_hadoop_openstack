@@ -1,0 +1,2 @@
+- name: install_grafana
+  yum: name=grafana state=installed

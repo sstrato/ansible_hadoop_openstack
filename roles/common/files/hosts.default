@@ -1,0 +1,23 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+# masters
+10.198.9.154 master01
+10.198.9.155 master02
+10.198.9.156 master03
+
+# slaves
+10.198.9.158 slave01
+10.198.9.159 slave02
+10.198.9.160 slave03
+10.198.9.161 slave04
+
+#kafka
+10.198.9.162 kafka01 
+10.198.9.164 kafka02 
+10.198.9.165 kafka03 
+
+# clients
+10.198.9.157 client01
+10.198.9.166 manage
+

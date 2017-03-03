@@ -1,0 +1,5 @@
+meta_graphitedb_in_influxdb: 'graphite'
+meta_grafanadb_in_influxdb: 'grafana'
+proxy_env:
+  http_proxy: proxy.yoursite:3128
+  https_proxy: proxy.yoursite:3128

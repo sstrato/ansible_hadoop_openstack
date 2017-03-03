@@ -1,0 +1,4 @@
+- hosts: "{{ server | default('pseudo') }}"
+  tasks:
+    - name: stop_zookeeper_server
+      service: name=zookeeper-server state=stopped

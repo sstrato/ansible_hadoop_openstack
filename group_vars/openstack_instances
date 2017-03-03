@@ -1,0 +1,11 @@
+os_username: ""
+os_userid: ""
+os_password: ""
+os_tenant_name: ""
+os_auth_url: ""
+os_region_name: ""
+availability_zone: ""
+os_image_id: "e60df4fa-df35-4999-9c7a-22c0c595f5f5"
+os_key_name: ""
+os_flavor_id: ""
+

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+STATE="down"
+
+while true; do
+  pgrep haproxy   
+  if [[ $? == 0 ]]; then
+    if [[ "$STATE" != "up" ]]; then
+      echo "announce route {% raw %} {{getv {% endraw %} "/cbl/{{ LB_NAME }}/vip{% raw %}" }}/32 {% endraw %}next-hop self"
+      STATE="up"
+    fi
+  else
+    if [[ "$STATE" != "down" ]]; then
+      echo "withdraw route 10.198.0.131/32 next-hop self"
+      STATE="down"
+    fi
+  fi
+
+  sleep 2
+done

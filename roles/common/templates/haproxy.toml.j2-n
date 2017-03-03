@@ -1,0 +1,11 @@
+[template]
+src = "haproxy.cfg.tmpl"
+dest = "/etc/haproxy/haproxy.cfg"
+keys = [
+<<<<<<< HEAD
+         "/cbl/{{ inventory_hostname }}"
+=======
+         "/cbl/{{ LB_NAME }}"
+>>>>>>> add ansible lb provision script
+]
+reload_cmd = "echo restarting && /usr/bin/systemctl reload haproxy"

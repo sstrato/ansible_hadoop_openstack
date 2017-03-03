@@ -1,0 +1,24 @@
+- hosts: '{{ server | default("hadoop_client") }}'
+  vars:
+    zeppelin_git_url: 'https://github.com/apache/incubator-zeppelin.git'
+    zeppelin_src_dir: '/usr/src/zeppelin'
+    zeppelin_version: 'master'
+    zeppelin_comiple_flag: '-Pspark-1.6 -Phadoop-2.6 -Pyarn -Ppyspark -DskipTests -P build-distr'
+    zeppelin_hadoop_version: '2.6.0'
+  roles:
+    - jdk
+    - maven
+  tasks:
+    - name: install_required_packages
+      yum: name={{ item }} state=installed
+      with_items:
+        - git
+        - bzip2
+        - npm
+        - fontconfig-devel
+    - name: mkdir_zeppelin_dir
+      file: path={{ zeppelin_src_dir }} state=directory recurse=yes
+    - name: clone_zeppelin_src
+      git: repo={{ zeppelin_git_url }} dest={{ zeppelin_src_dir }}/{{ zeppelin_version }}
+    - name: compile_zeppelin
+      shell: mvn clean package -Dhadoop.version={{ zeppelin_hadoop_version }} {{ zeppelin_comiple_flag }} chdir={{ zeppelin_src_dir }}/{{ zeppelin_version }}

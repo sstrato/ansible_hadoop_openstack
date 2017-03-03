@@ -1,0 +1,23 @@
+- hosts: '{{src_server | default("localhost") }}'
+  tasks:
+    - name: create_keys
+      shell: ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa creates=~/.ssh/id_rsa
+
+- hosts: '{{dst_server | default("hadoop_all") }}'
+  vars:
+    key_dir: "/tmp/id_rsa_{{ ansible_date_time.epoch }}"
+  tasks:
+    - name: make_key_dir
+      file: path="{{ key_dir }}" state=directory
+    - name: get_key_string
+      local_action: shell cat ~/.ssh//id_rsa.pub
+      run_once: True
+      register: key_string
+    - name: mkdir_ssh_dir
+      file: path={{ ansible_env.HOME }}/.ssh mode=700 owner={{ ansible_user_id }} state=directory
+    - name: add_key_string_to_authorized_keys
+      lineinfile: dest={{ ansible_env.HOME }}/.ssh/authorized_keys line="{{ key_string.stdout }}" create=yes
+    - name: chmod_authorized_keys
+      file: path={{ ansible_env.HOME }}/.ssh/authorized_keys mode=600
+
+# vim: tw=0 et ts=2 sw=2

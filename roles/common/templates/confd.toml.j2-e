@@ -1,0 +1,11 @@
+confdir = "/etc/confd"
+interval = 10
+backend = "etcd"
+nodes = [
+ "http://etcd01.b1.host.domains:2379",
+ "http://etcd02.b1.host.domains:2379",
+ "http://etcd03.b1.host.domains:2379"
+]
+prefix = "/"
+scheme = "http"
+verbose = true

@@ -1,0 +1,9 @@
+ganglia_slave_cluster_name: 'hadoop_slave'
+ganglia_slave_mcast_join: '239.2.11.72'
+ganglia_slave_host: '{{ groups["hadoop_slave"][0] }}'
+
+cdh5_ganglia_servers: '239.2.11.72:8649'
+
+proxy_env:
+  http_proxy: proxy.yoursite:3128
+  https_proxy: proxy.yoursite:3128

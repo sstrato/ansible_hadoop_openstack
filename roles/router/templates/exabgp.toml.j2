@@ -1,0 +1,7 @@
+[template]
+src = "exabgp.ini.tmpl"
+dest = "/etc/exabgp/exabgp.ini"
+keys = [
+         "/cbl/{{ LB_NAME }}/vip"
+]
+reload_cmd = "echo restarting && /usr/bin/systemctl restart exabgp"

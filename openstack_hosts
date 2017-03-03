@@ -1,0 +1,13 @@
+[openstack_instances]
+master01 flavor_id=db3b0472-bd49-4433-9a7d-6e6fe9489c4d group=master
+master02 flavor_id=db3b0472-bd49-4433-9a7d-6e6fe9489c4d group=master
+master03 flavor_id=db3b0472-bd49-4433-9a7d-6e6fe9489c4d group=master
+client01 flavor_id=db3b0472-bd49-4433-9a7d-6e6fe9489c4d group=master 
+slave01 flavor_id=5b5d68db-efdb-493a-bf5e-65cbd6cbe1c9 group=slave
+slave02 flavor_id=5b5d68db-efdb-493a-bf5e-65cbd6cbe1c9 group=slave
+slave03 flavor_id=5b5d68db-efdb-493a-bf5e-65cbd6cbe1c9 group=slave
+slave04 flavor_id=5b5d68db-efdb-493a-bf5e-65cbd6cbe1c9 group=slave 
+kafka01 flavor_id=db3b0472-bd49-4433-9a7d-6e6fe9489c4d group=kafka 
+kafka02 flavor_id=db3b0472-bd49-4433-9a7d-6e6fe9489c4d group=kafka 
+kafka03 flavor_id=db3b0472-bd49-4433-9a7d-6e6fe9489c4d group=kafka 
+manage flavor_id=db3b0472-bd49-4433-9a7d-6e6fe9489c4d group=manage

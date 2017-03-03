@@ -1,0 +1,18 @@
+---
+- hosts: openstack_instances
+  connection: local
+  serial: 1
+  user: deploy 
+  roles:
+    - openstack_instances
+
+#- hosts: all
+#  gather_facts: no
+#  vars:
+#    http_proxy: http://proxy.yoursite
+#    https_proxy: https://proxy.yoursite
+#  roles:
+#    - common 
+#  handlers:
+#    - include: roles/common/handler.yml
+

@@ -1,0 +1,36 @@
+---
+- name: ensure instance exists in openstack
+  nova_compute:
+    state: present
+    login_username: "{{ os_username }}"
+    login_password: "{{ os_password }}"
+    login_tenant_name: "{{ os_tenant_name }}"
+    auth_url: "{{ os_auth_url }}"
+    region_name: "{{ os_region_name }}"
+    availability_zone: "{{ availability_zone }}"
+    name: "{{ inventory_hostname }}"
+    image_id: "{{ os_image_id }}"
+    key_name: "{{ os_key_name }}"
+    flavor_id: "{{ flavor_id }}"
+  register: nova 
+
+#
+# I'm going to leave some of the debug entries here but commented out
+#
+
+#- debug: msg="{{ nova.info }}"
+
+- debug: msg="{{ nova.info.addresses.Dev_Zone[0].addr }}"
+
+- name: add the instance to thenventory_hostname }} in-memory inventory
+  add_host: name={{ inventory_hostname }}
+
+# Pause for a while if the vm has just been created
+- pause: seconds=30
+  when: nova.changed
+
+- set_fact: ansible_ssh_host={{ nova.info.addresses.Dev_Zone[0].addr }}
+
+- debug: msg="{{ ansible_ssh_host }}"
+
+#- debug: var=hostvars[inventory_hostname]

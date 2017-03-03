@@ -1,0 +1,13 @@
+group cbl_exa {
+    router-id {{ ansible_ssh_host }} ; 
+
+    neighbor 10.198.0.70  {
+        local-address {{ ansible_ssh_host }} ;
+        local-as 200;
+        peer-as 100;
+    }
+
+    process add-routes {
+        run /etc/exabgp/cbl_check.sh;
+    }
+}

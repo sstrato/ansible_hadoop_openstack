@@ -1,0 +1,5 @@
+- name: install_openblas
+  yum: name={{ item }} state=installed
+  with_items:
+    - openblas-devel
+    - lapack-devel

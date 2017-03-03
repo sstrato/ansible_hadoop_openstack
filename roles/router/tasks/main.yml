@@ -1,0 +1,72 @@
+---
+
+#- debug: msg={{ ansible_ssh_host }}
+
+- ping:
+  register: first_ping
+  ignore_errors: True
+
+- pause: seconds=30
+  when: first_ping.changed and '"error" in first_ping.stderr'
+
+- name: get hostname
+  command: hostname
+  register: hostname
+
+- debug: msg="{{ hostname.stdout }}"
+- name: download exabgp
+  sudo: yes 
+  environment:
+    http_proxy: http://proxy.yoursite
+    https_proxy: https://proxy.yoursite
+  get_url: url=https://github.com/Exa-Networks/exabgp/archive/3.4.10.tar.gz dest=./exabgp.tar.gz use_proxy=yes validate_certs=no
+<<<<<<< HEAD
+- name: setup exabgp
+  remote_user: deploy
+  sudo: yes
+  command: "{{item}}"
+  with_items:
+    - tar xfz /root/exabgp.tar.gz -C /root
+    - cp /root/exabgp-3.4.10/sbin/exabgp /usr/sbin 
+    - chmod +x /usr/sbin/exabgp
+
+- file: path=/etc/exabgp/ state=directory mode=0755 recurse=yes
+  sudo: yes
+- template: src=exabgp.ini.j2 dest=/etc/exabgp/cbl.ini backup=yes 
+=======
+#- name: setup exabgp
+#  remote_user: deploy
+#  sudo: yes
+#  command: "{{item}}"
+#  with_items:
+#    - tar xfz /root/exabgp.tar.gz -C /root
+#    - cp /root/exabgp-3.4.10/sbin/exabgp /usr/sbin 
+#    - chmod +x /usr/sbin/exabgp
+
+- file: path=/etc/exabgp/ state=directory mode=0755 recurse=yes
+  sudo: yes
+- template: src=exabgp.conf.j2 dest=/etc/exabgp/cbl.conf backup=yes 
+>>>>>>> add ansible lb provision script
+  sudo: yes 
+
+- template: src=cbl_check.sh.j2 dest=/etc/exabgp/cbl_check.sh backup=yes 
+  sudo: yes 
+
+- template: src=exabgp.toml.j2 dest=/etc/confd/conf.d/exabgp.toml backup=yes 
+  sudo: yes 
+
+- template: src=exabgp.ini.j2 dest=/etc/confd/templates/exabgp.ini.tmpl backup=yes 
+  sudo: yes 
+
+- template: src=exabgp.service.j2 dest=/usr/lib/systemd/system/exabgp.service
+  sudo: yes 
+
+- name: reload systemd daemon
+  sudo: yes
+  command : /usr/bin/systemctl daemon-reload
+- name: enable systemd daemon
+  sudo: yes
+  command : /usr/bin/systemctl enable exabgp.service 
+- name: restart confd
+  sudo: yes
+  service: name=confd state=restarted

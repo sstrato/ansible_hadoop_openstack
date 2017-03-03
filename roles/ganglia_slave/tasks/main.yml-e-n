@@ -1,0 +1,4 @@
+---
+- include: install.yml tags=install,ganglia_slave
+- include: config.yml tags=config,ganglia_slave
+- include: service.yml tags=service,ganglia_slave

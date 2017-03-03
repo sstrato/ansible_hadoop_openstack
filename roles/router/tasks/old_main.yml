@@ -1,0 +1,39 @@
+---
+
+#- debug: msg={{ ansible_ssh_host }}
+
+- ping:
+  register: first_ping
+  ignore_errors: True
+
+- pause: seconds=30
+  when: first_ping.changed and '"error" in first_ping.stderr'
+
+- name: get hostname
+  command: hostname
+  register: hostname
+
+- debug: msg="{{ hostname.stdout }}"
+
+- name: copy vulcand to remote vm 
+  remote_user: deploy
+  sudo: yes
+  copy: src=./bin/vulcand dest=/usr/local/bin/vulcand owner=deploy group=deploy mode=755
+
+- name: copy vctl to remote vm 
+  remote_user: deploy
+  sudo: yes
+  copy: src=./bin/vctl dest=/usr/local/bin/vctl owner=deploy group=deploy mode=755
+
+- template: src=vulcand.service.j2 dest=/usr/lib/systemd/system/vulcand.service backup=yes 
+  sudo: yes 
+- name: reload systemd daemon
+  sudo: yes
+  command : /usr/bin/systemctl daemon-reload
+- name: enable systemd daemon
+  sudo: yes
+  command : /usr/bin/systemctl enable vulcand.service
+- name: restart vulcand
+  sudo: yes
+  service: name=vulcand state=restarted
+- shell: /usr/local/bin/vctl listener upsert --id http --proto http --addr 0.0.0.0:80 && /usr/local/bin/vctl listener upsert --id https --proto https --addr 0.0.0.0:443

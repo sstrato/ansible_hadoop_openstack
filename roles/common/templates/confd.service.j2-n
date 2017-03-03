@@ -1,0 +1,11 @@
+[Unit]
+Description=Confd
+After=haproxy.service 
+
+[Service]
+TimeoutStartSec=0
+ExecStart=/usr/bin/confd 
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

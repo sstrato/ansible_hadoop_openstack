@@ -1,0 +1,10 @@
+  - name: reload systemd daemon
+    sudo: yes
+    command : /usr/bin/systemctl daemon-reload 
+  - name: enable systemd daemon
+    sudo: yes
+    command : /usr/bin/systemctl enable vulcand.service 
+  - name: restart vulcand
+    sudo: yes
+    service: name=vulcand state=restarted
+
